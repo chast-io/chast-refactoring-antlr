@@ -6,14 +6,13 @@ import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.misc.Interval
 import org.antlr.v4.runtime.tree.ParseTree
-import refactorings.remove_double_negation.RemoveDoubleNegationRefactoring
 import java.io.File
 
 abstract class BaseRefactoring {
 
     open fun processFile(file: File): RefactoringResponse {
         val codeText = readFile(file)
-        return RemoveDoubleNegationRefactoring.processCodeString(
+        return processCodeString(
             codeText,
             SupportedLanguage.getLanguageFromExtension(file.extension)
         )

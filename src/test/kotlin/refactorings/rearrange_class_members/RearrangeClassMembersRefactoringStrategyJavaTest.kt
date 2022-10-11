@@ -136,6 +136,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
     fun sortComplex() {
         val before = """   
             |;
+            |
             |private void sampleMethod() {
             |
             |}
@@ -169,6 +170,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |}
             |
             |String defaultModifierFoo;
+            |
             |public String publicFoo;
             |
             |public RearrangeClassMembersRule() {
@@ -201,6 +203,9 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private void sampleMethod() {
             |
             |}
+            |
+            |;
+            |
             |class SomethingCouldBeInnerType {
             |    private String foo = "";
     
@@ -212,6 +217,8 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private enum Days {
             |    Mon, Tue, Wed, Thu, Fri, Sat, Sun,
             |}
+            |
+            |;
         """.replaceIndentByMargin("    ")
 
         val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
