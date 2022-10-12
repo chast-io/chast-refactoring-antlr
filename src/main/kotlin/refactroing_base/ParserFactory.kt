@@ -1,5 +1,7 @@
 package refactroing_base
 
+import CSharpLexer
+import CSharpParser
 import JavaLexer
 import JavaParser
 import PythonLexer
@@ -16,6 +18,7 @@ object ParserFactory {
         return when (languages) {
             SupportedLanguage.PYTHON -> getPythonParserContextForCode(code)
             SupportedLanguage.JAVA -> getJavaParserContextForCode(code)
+            SupportedLanguage.CSharp -> getCSharpParserContextForCode(code)
         }
     }
 
@@ -27,6 +30,7 @@ object ParserFactory {
         return when (languages) {
             SupportedLanguage.PYTHON -> ::getPythonParserContextForCode
             SupportedLanguage.JAVA -> ::getJavaParserContextForCode
+            SupportedLanguage.CSharp -> ::getCSharpParserContextForCode
         }
     }
 
@@ -63,4 +67,21 @@ object ParserFactory {
             language = SupportedLanguage.JAVA
         )
     }
+
+    private fun getCSharpParserContextForCode(code: String): ParserContext {
+        val lexer = CSharpLexer(CharStreams.fromString(code))
+        val tokenStream = CommonTokenStream(lexer)
+        val rewriter = TokenStreamRewriter(tokenStream)
+        val parser = CSharpParser(tokenStream)
+
+        return ParserContext(
+            lexer = lexer,
+            parser = parser,
+            tokenStream = tokenStream,
+            rewriter = rewriter,
+            parseTreeRoot = parser.compilation_unit(),
+            language = SupportedLanguage.CSharp
+        )
+    }
+
 }

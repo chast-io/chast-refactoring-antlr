@@ -1,7 +1,9 @@
 package refactorings.rearrange_class_members
 
 import org.junit.jupiter.api.Test
+import refactorings.rearrange_class_members.config_file.RearrangeClassMembersConfigReader
 import refactroing_base.SupportedLanguage
+import java.io.File
 import kotlin.test.assertEquals
 
 internal class RearrangeClassMembersRefactoringStrategyJavaTest {
@@ -14,6 +16,10 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
                 |}
             """.trimMargin()
         }
+
+        private val DEFAULT_CONFIG = RearrangeClassMembersConfigReader.readConfig(
+            File("src/test/resources/refactorings/rearrange_class_members/default_config.yaml")
+        )
     }
 
     @Test
@@ -31,7 +37,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private void method1() {}
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -51,7 +57,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private int a = 1;
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -70,7 +76,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private Wrapper() {}
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -95,7 +101,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |private void method1() {}
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -128,7 +134,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |}
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -221,7 +227,7 @@ internal class RearrangeClassMembersRefactoringStrategyJavaTest {
             |;
         """.replaceIndentByMargin("    ")
 
-        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RearrangeClassMembersRefactoringStrategy.processCodeString(wrapper(before), SupportedLanguage.JAVA, DEFAULT_CONFIG)
         assertEquals(wrapper(expected), after.code)
     }
 }

@@ -1,19 +1,20 @@
 package refactroing_base.strategies.replace_source_node_with_target_node
 
 import org.antlr.v4.runtime.ParserRuleContext
-import org.antlr.v4.runtime.TokenStreamRewriter
 import org.antlr.v4.runtime.tree.ParseTree
-import refactroing_base.BaseRefactoring
+import refactroing_base.RefactoringUtils
 import refactroing_base.ParserContext
+import refactroing_base.RefactoringUtils.walkAndProcess
+import refactroing_base.TokenRangeUtils.getFullText
 import java.util.*
 
 /**
  * This refactoring strategy replaces the first occurrence of a rule with the second occurrence of the same rule.
  * This is useful for refactoring code that has redundant code.
  */
-abstract class ReplaceSourceNodeWithTargetNodeRefactoringStrategy : BaseRefactoring() {
+object ReplaceSourceNodeWithTargetNodeRefactoringStrategy {
 
-    protected fun replaceFirstWithSecondOccurrence(
+    fun replaceFirstWithSecondOccurrence(
         code: String,
         codeToTree: (String) -> ParserContext,
         conditions: RuleMatcherConditions
@@ -35,7 +36,7 @@ abstract class ReplaceSourceNodeWithTargetNodeRefactoringStrategy : BaseRefactor
     }
 
 
-    protected fun findChild(
+    fun findChild(
         root: ParseTree,
         conditions: RuleMatcherConditions
     ): ParseTree? {

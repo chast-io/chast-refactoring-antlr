@@ -2,82 +2,76 @@ package refactorings.rearrange_class_members
 
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
-import refactroing_base.*
-import java.util.*
+import refactorings.rearrange_class_members.config_file.RearrangeClassMembersConfig
+import refactorings.rearrange_class_members.config_file.RearrangeClassMembersConfigReader
+import refactorings.rearrange_class_members.config_file.RearrangeClassMembersConfigReader.readConfig
+import refactorings.rearrange_class_members.languages.RearrangeClassMembersCSharpProcessorProvider
+import refactorings.rearrange_class_members.languages.RearrangeClassMembersJavaProcessorProvider
+import refactroing_base.ParserContext
+import refactroing_base.ParserFactory
+import refactroing_base.RefactoringResponse
+import refactroing_base.RefactoringUtils.readFile
+import refactroing_base.RefactoringUtils.walkAndProcess
+import refactroing_base.SupportedLanguage
+import refactroing_base.strategies.rearrange_nodes.RearrangeNodesRefactoringStrategy.rearrangeNodes
+import java.io.File
 
-object RearrangeClassMembersRefactoringStrategy : BaseRefactoring() {
-    override fun processCodeString(
-        code: String, language: SupportedLanguage
+object RearrangeClassMembersRefactoringStrategy {
+
+    fun processFile(file: File, configFile: File): RefactoringResponse {
+        val codeText = readFile(file)
+        val config = readConfig(configFile)
+        return processCodeString(
+            codeText,
+            SupportedLanguage.getLanguageFromExtension(file.extension),
+            config
+        )
+    }
+
+    fun processCodeString(
+        code: String, language: SupportedLanguage, config: RearrangeClassMembersConfig
     ): RefactoringResponse {
-        val configProvider: RearrangeClassMembersLanguageConfigProvider<*, *>
-        val codeToTree: (String) -> ParserContext
+        val configProvider = when (language) {
+            SupportedLanguage.JAVA -> RearrangeClassMembersJavaProcessorProvider
+            SupportedLanguage.CSharp -> RearrangeClassMembersCSharpProcessorProvider
 
-        when (language) {
-            SupportedLanguage.JAVA -> {
-                configProvider = RearrangeClassMembersJavaConfigProvider
-                codeToTree = ({ c -> ParserFactory.getParseTreeForLanguage(SupportedLanguage.JAVA, c) })
-            }
             else -> throw UnsupportedOperationException("Unsupported language: $language")
         }
 
-        val config = configProvider.getConfig()
+        val codeToTree: (String) -> ParserContext = ({ c -> ParserFactory.getParseTreeForLanguage(language, c) })
 
-        // TODO change ClassBodyContext to something not java specific
-        val changedCode = walkAndProcess<JavaParser.ClassBodyContext>(
+        @Suppress("UNCHECKED_CAST")
+        val config =
+            configProvider.getProcessor(config) as RearrangeClassMembersLanguageProcessor<ParseTree, ParserRuleContext>
+
+        val changedCode = walkAndProcess<ParserRuleContext>(
             code,
             codeToTree,
             config.classBodyMatcher
-        ) { classBody, parserContext -> return@walkAndProcess processClass(classBody, parserContext, config) }
+        ) { classBody, parserContext ->
+            return@walkAndProcess rearrangeNodes(
+                config.classMembersSelector(classBody),
+                config.declarationTypeFilters,
+                parserContext,
+                config.tokenExtensionConfig
+            )
+        }
 
         return RefactoringResponse(changedCode, (changedCode != code))
     }
+}
 
-    private fun <ClassBody : ParseTree, Declaration : ParserRuleContext> processClass(
-        classBody: ClassBody, parserContext: ParserContext, config: RearrangeClassMembersConfig<ClassBody, Declaration>
-    ): Boolean {
-        var changed = false
+fun main(args: Array<String>) {
 
-        val classMembers = config.classMembersSelector(classBody)
-        val sortedClassMembers = sortMembers(classMembers, config.declarationTypeFilters)
-
-        assert(
-            sortedClassMembers.size == classMembers.size
-        ) { "Size of sorted members (${sortedClassMembers.size}) is not equal to size of class body declarations (${classMembers.size})" }
-
-
-        for (i in classMembers.indices) {
-            val sourceMember = classMembers[i]
-            val replacingMember = sortedClassMembers[i]
-
-            if (sourceMember == replacingMember) continue
-
-            changed = true
-            parserContext.rewriter.replace(
-                sourceMember.start, sourceMember.stop, getFullText(
-                    replacingMember, parserContext.tokenStream
-                )
-            )
-
-        }
-
-        return changed
+    if(args.size != 2) {
+        println("Usage: java -jar RearrangeClassMembers.jar <path_to_file> <path_to_config_file>")
+        return
     }
 
-    private fun <T : ParseTree> sortMembers(
-        classMembers: List<T>, declarationTypeFilters: List<(T) -> Boolean>
-    ): List<T> {
-        val sortedClassMembers: List<MutableList<T>> = List(declarationTypeFilters.size + 1) { LinkedList() }
-
-        member@ for (member in classMembers) {
-            for ((index, filterFn) in declarationTypeFilters.withIndex()) {
-                if (filterFn(member)) {
-                    sortedClassMembers[index].add(member)
-                    continue@member
-                }
-            }
-            sortedClassMembers.last().add(member)
-        }
-
-        return sortedClassMembers.flatten()
+    RearrangeClassMembersRefactoringStrategy.processFile(
+        args[0].let { File(it) },
+        args[1].let { File(it) },
+    ).let {
+        println(it)
     }
 }

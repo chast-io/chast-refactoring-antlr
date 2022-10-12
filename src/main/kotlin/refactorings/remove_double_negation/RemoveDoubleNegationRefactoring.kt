@@ -9,13 +9,13 @@ import refactroing_base.ParserContext
 import refactroing_base.ParserFactory
 import refactroing_base.RefactoringResponse
 import refactroing_base.SupportedLanguage
-import refactroing_base.strategies.replace_source_node_with_target_node.ReplaceSourceNodeWithTargetNodeRefactoringStrategy
+import refactroing_base.strategies.replace_source_node_with_target_node.ReplaceSourceNodeWithTargetNodeRefactoringStrategy.replaceFirstWithSecondOccurrence
 import refactroing_base.strategies.replace_source_node_with_target_node.RuleMatcherConditions
 
 
-object RemoveDoubleNegationRefactoring : ReplaceSourceNodeWithTargetNodeRefactoringStrategy() {
+object RemoveDoubleNegationRefactoring {
 
-    override fun processCodeString(code: String, language: SupportedLanguage): RefactoringResponse {
+    fun processCodeString(code: String, language: SupportedLanguage): RefactoringResponse {
         val codeToParserContext: (String) -> ParserContext
         val conditions: RuleMatcherConditions
         when (language) {
@@ -28,10 +28,12 @@ object RemoveDoubleNegationRefactoring : ReplaceSourceNodeWithTargetNodeRefactor
                 codeToParserContext = ParserFactory.getParserForLanguage(SupportedLanguage.JAVA)
                 conditions = getJavaRuleMatcherConditions()
             }
+
+            else -> throw UnsupportedOperationException("Unsupported language: $language")
         }
 
         val codeAfterProcessing = replaceFirstWithSecondOccurrence(code, codeToParserContext, conditions)
-        return RefactoringResponse(codeAfterProcessing,  (code != codeAfterProcessing))
+        return RefactoringResponse(codeAfterProcessing, (code != codeAfterProcessing))
     }
 
     private fun getJavaRuleMatcherConditions(): RuleMatcherConditions {

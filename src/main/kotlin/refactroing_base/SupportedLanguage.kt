@@ -2,7 +2,8 @@ package refactroing_base
 
 enum class SupportedLanguage(val extension: String) {
     JAVA(".java"),
-    PYTHON(".py");
+    PYTHON(".py"),
+    CSharp(".cs");
 
     companion object {
         public fun getLanguageFromExtension(extension: String): SupportedLanguage {

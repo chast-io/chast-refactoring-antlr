@@ -5,6 +5,8 @@ plugins {
     application
 
     antlr
+
+    kotlin("plugin.serialization") version "1.7.20"
 }
 
 group = "io.chast.refactor.antlr"
@@ -20,6 +22,8 @@ dependencies {
     antlr("org.antlr:antlr4:4.11.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
+    implementation("com.charleskorn.kaml:kaml-jvm:0.49.0")
 }
 
 tasks.test {
