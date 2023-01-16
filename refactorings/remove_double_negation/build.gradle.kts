@@ -30,9 +30,9 @@ application {
     mainClass.set("MainKt")
 }
 
-tasks.withType<Jar>().configureEach {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+//tasks.withType<Jar>().configureEach {
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//}
 
 tasks.withType<Jar> {
     manifest {

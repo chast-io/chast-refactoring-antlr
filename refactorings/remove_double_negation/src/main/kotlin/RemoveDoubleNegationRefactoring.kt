@@ -18,13 +18,13 @@ object RemoveDoubleNegationRefactoring {
         val codeToParserContext: (String) -> ParserContext
         val conditions: RuleMatcherConditions
         when (language) {
-            SupportedLanguage.PYTHON -> {
-                codeToParserContext = ParserFactory.getParserForLanguage(SupportedLanguage.PYTHON)
+            SupportedLanguage.Python -> {
+                codeToParserContext = ParserFactory.getParserForLanguage(SupportedLanguage.Python)
                 conditions = getPythonRuleMatcherConditions()
             }
 
-            SupportedLanguage.JAVA -> {
-                codeToParserContext = ParserFactory.getParserForLanguage(SupportedLanguage.JAVA)
+            SupportedLanguage.Java -> {
+                codeToParserContext = ParserFactory.getParserForLanguage(SupportedLanguage.Java)
                 conditions = getJavaRuleMatcherConditions()
             }
 

@@ -8,9 +8,10 @@ object ParserFactory {
 
     public fun getParseTreeForLanguage(languages: SupportedLanguage, code: String): ParserContext {
         return when (languages) {
-            SupportedLanguage.PYTHON -> getPythonParserContextForCode(code)
-            SupportedLanguage.JAVA -> getJavaParserContextForCode(code)
+            SupportedLanguage.Python -> getPythonParserContextForCode(code)
+            SupportedLanguage.Java -> getJavaParserContextForCode(code)
             SupportedLanguage.CSharp -> getCSharpParserContextForCode(code)
+            SupportedLanguage.Kotlin -> getKotlinParserContextForCode(code)
         }
     }
 
@@ -20,9 +21,10 @@ object ParserFactory {
 
     public fun getParserForLanguage(languages: SupportedLanguage): (String) -> ParserContext {
         return when (languages) {
-            SupportedLanguage.PYTHON -> ParserFactory::getPythonParserContextForCode
-            SupportedLanguage.JAVA -> ParserFactory::getJavaParserContextForCode
+            SupportedLanguage.Python -> ParserFactory::getPythonParserContextForCode
+            SupportedLanguage.Java -> ParserFactory::getJavaParserContextForCode
             SupportedLanguage.CSharp -> ParserFactory::getCSharpParserContextForCode
+            SupportedLanguage.Kotlin -> ParserFactory::getKotlinParserContextForCode
         }
     }
 
@@ -39,7 +41,7 @@ object ParserFactory {
             tokenStream = tokenStream,
             rewriter = rewriter,
             parseTreeRoot = parser.root(),
-            language = SupportedLanguage.PYTHON
+            language = SupportedLanguage.Python
         )
     }
 
@@ -56,7 +58,7 @@ object ParserFactory {
             tokenStream = tokenStream,
             rewriter = rewriter,
             parseTreeRoot = parser.compilationUnit(),
-            language = SupportedLanguage.JAVA
+            language = SupportedLanguage.Java
         )
     }
 
@@ -76,4 +78,19 @@ object ParserFactory {
         )
     }
 
+    private fun getKotlinParserContextForCode(code: String): ParserContext {
+        val lexer = KotlinLexer(CharStreams.fromString(code))
+        val tokenStream = CommonTokenStream(lexer)
+        val rewriter = TokenStreamRewriter(tokenStream)
+        val parser = KotlinParser(tokenStream)
+
+        return ParserContext(
+            lexer = lexer,
+            parser = parser,
+            tokenStream = tokenStream,
+            rewriter = rewriter,
+            parseTreeRoot = parser.kotlinFile(),
+            language = SupportedLanguage.Kotlin
+        )
+    }
 }

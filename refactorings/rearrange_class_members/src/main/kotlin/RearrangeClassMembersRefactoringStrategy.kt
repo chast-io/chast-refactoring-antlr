@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
 import RefactoringUtils.readFile
 import RefactoringUtils.walkAndProcess
+import languages.RearrangeClassMembersKotlinProcessorProvider
 import strategies.rearrange_nodes.RearrangeNodesRefactoringStrategy.rearrangeNodes
 import java.io.File
 
@@ -25,8 +26,9 @@ object RearrangeClassMembersRefactoringStrategy {
         code: String, language: SupportedLanguage, config: RearrangeClassMembersConfig
     ): RefactoringResponse {
         val configProvider = when (language) {
-            SupportedLanguage.JAVA -> RearrangeClassMembersJavaProcessorProvider
+            SupportedLanguage.Java -> RearrangeClassMembersJavaProcessorProvider
             SupportedLanguage.CSharp -> RearrangeClassMembersCSharpProcessorProvider
+            SupportedLanguage.Kotlin -> RearrangeClassMembersKotlinProcessorProvider
 
             else -> throw UnsupportedOperationException("Unsupported language: $language")
         }

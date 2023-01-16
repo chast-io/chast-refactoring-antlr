@@ -20,7 +20,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!!true);"
         val expected = "print(true);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -29,7 +29,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!!false);"
         val expected = "print(false);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -38,7 +38,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!! false );"
         val expected = "print(false );"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -47,7 +47,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!! /*COMMENT*/ false );"
         val expected = "print(/*COMMENT*/ false );"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -56,7 +56,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!!(false));"
         val expected = "print((false));"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -65,7 +65,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!(!false));"
         val expected = "print(false);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -74,7 +74,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!!!true);"
         val expected = "print(!true);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -83,7 +83,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!!!!true);"
         val expected = "print(true);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -92,7 +92,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!(((!!!true))));"
         val expected = "print(true);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -101,7 +101,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!(!true && false));"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(expected, after.changed)
     }
 
@@ -111,7 +111,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!(!true || false));"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(expected, after.changed)
     }
 
@@ -120,7 +120,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(/*comment1*/!/*comment2*/(!/*comment3*/true/*comment4*/)/*comment5*/);"
         val expected = "print(/*comment1*//*comment3*/true/*comment4*//*comment5*/);"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -129,7 +129,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "if (!(!false)) return \"Hello\";"
         val expected = "if (false) return \"Hello\";"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -138,7 +138,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "print(!(!testWhatever(12)));"
         val expected = "print(testWhatever(12));"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -147,7 +147,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "//print(!(!! true || false))"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(expected, after.changed)
     }
 
@@ -156,7 +156,7 @@ internal class RemoveDoubleNegationRefactoringJavaTest {
         val before = "/*print(!(!! true || false))*/"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.JAVA)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Java)
         assertEquals(expected, after.changed)
     }
 }

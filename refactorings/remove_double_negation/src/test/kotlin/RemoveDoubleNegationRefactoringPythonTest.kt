@@ -14,7 +14,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not True)"
         val expected = "print(True)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -23,7 +23,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not False)"
         val expected = "print(False)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -32,7 +32,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not  False)"
         val expected = "print(False)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -41,7 +41,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not (False))"
         val expected = "print((False))"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -50,7 +50,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not (not False))"
         val expected = "print(False)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -59,7 +59,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not not True)"
         val expected = "print(not True)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -68,7 +68,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not not not not True)"
         val expected = "print(True)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -77,7 +77,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not (((not not not True))))"
         val expected = "print(True)"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -86,7 +86,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not (not True && False))"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(expected, after.changed)
     }
 
@@ -96,7 +96,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not (not True || False))"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(expected, after.changed)
     }
 
@@ -113,7 +113,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         """.replaceIndentByMargin("")
 
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -129,7 +129,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         """.replaceIndentByMargin("")
 
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -138,7 +138,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "print(not (not testWhatever(12)))"
         val expected = "print(testWhatever(12))"
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(wrapper(expected), after.code)
     }
 
@@ -147,7 +147,7 @@ internal class RemoveDoubleNegationRefactoringPythonTest {
         val before = "# print(not (not not  True || False))"
         val expected = false
 
-        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.PYTHON)
+        val after = RemoveDoubleNegationRefactoring.processCodeString(wrapper(before), SupportedLanguage.Python)
         assertEquals(expected, after.changed)
     }
 
