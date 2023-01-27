@@ -11,7 +11,6 @@ object ParserFactory {
             SupportedLanguage.Python -> getPythonParserContextForCode(code)
             SupportedLanguage.Java -> getJavaParserContextForCode(code)
             SupportedLanguage.CSharp -> getCSharpParserContextForCode(code)
-            SupportedLanguage.Kotlin -> getKotlinParserContextForCode(code)
         }
     }
 
@@ -24,7 +23,6 @@ object ParserFactory {
             SupportedLanguage.Python -> ParserFactory::getPythonParserContextForCode
             SupportedLanguage.Java -> ParserFactory::getJavaParserContextForCode
             SupportedLanguage.CSharp -> ParserFactory::getCSharpParserContextForCode
-            SupportedLanguage.Kotlin -> ParserFactory::getKotlinParserContextForCode
         }
     }
 
@@ -75,22 +73,6 @@ object ParserFactory {
             rewriter = rewriter,
             parseTreeRoot = parser.compilation_unit(),
             language = SupportedLanguage.CSharp
-        )
-    }
-
-    private fun getKotlinParserContextForCode(code: String): ParserContext {
-        val lexer = KotlinLexer(CharStreams.fromString(code))
-        val tokenStream = CommonTokenStream(lexer)
-        val rewriter = TokenStreamRewriter(tokenStream)
-        val parser = KotlinParser(tokenStream)
-
-        return ParserContext(
-            lexer = lexer,
-            parser = parser,
-            tokenStream = tokenStream,
-            rewriter = rewriter,
-            parseTreeRoot = parser.kotlinFile(),
-            language = SupportedLanguage.Kotlin
         )
     }
 }

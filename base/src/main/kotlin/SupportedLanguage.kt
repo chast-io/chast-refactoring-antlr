@@ -1,8 +1,7 @@
 enum class SupportedLanguage {
     Java,
     Python,
-    CSharp,
-    Kotlin, ;
+    CSharp,;
 
     companion object {
         public fun getLanguageFromExtension(extension: String): SupportedLanguage {
@@ -11,7 +10,6 @@ enum class SupportedLanguage {
                     endsWith("java") -> Java
                     endsWith("py") -> Python
                     endsWith("cs") -> CSharp
-                    endsWith("kt") -> Kotlin
                     else -> throw IllegalArgumentException("Unsupported extension: $extension")
                 }
             }
