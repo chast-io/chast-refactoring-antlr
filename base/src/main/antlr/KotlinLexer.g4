@@ -10,12 +10,6 @@
  * https://github.com/JetBrains/kotlin/tree/master/compiler/testData/psi
  */
 
- /**
- * ==[[ CHAST ]]==
- * IMPORTANT NOTE: This grammar is adjusted to NOT skip whitespaces.
- *                 All occurrences of skip are replaced with channel(HIDDEN).
- */
-
 lexer grammar KotlinLexer;
 
 import UnicodeClasses;
@@ -37,7 +31,7 @@ LineComment
 
 WS
     : [\u0020\u0009\u000C]
-      -> channel(HIDDEN)
+      -> skip
     ;
 
 NL: '\u000A' | '\u000D' '\u000A' ;
@@ -461,8 +455,8 @@ Inside_Identifier: Identifier -> type(Identifier) ;
 Inside_LabelReference: LabelReference -> type(LabelReference) ;
 Inside_LabelDefinition: LabelDefinition -> type(LabelDefinition) ;
 Inside_Comment: (LineComment | DelimitedComment) -> channel(HIDDEN) ;
-Inside_WS: WS -> channel(HIDDEN) ;
-Inside_NL: NL -> channel(HIDDEN) ;
+Inside_WS: WS -> skip ;
+Inside_NL: NL -> skip ;
 
 
 mode LineString ;
@@ -515,7 +509,7 @@ MultiLineStrExprStart
     : '${' -> pushMode(StringExpression)
     ;
 
-MultiLineNL: NL -> channel(HIDDEN) ;
+MultiLineNL: NL -> skip ;
 
 
 mode StringExpression ;
@@ -589,5 +583,5 @@ StrExpr_Identifier: Identifier -> type(Identifier) ;
 StrExpr_LabelReference: LabelReference -> type(LabelReference) ;
 StrExpr_LabelDefinition: LabelDefinition -> type(LabelDefinition) ;
 StrExpr_Comment: (LineComment | DelimitedComment) -> channel(HIDDEN) ;
-StrExpr_WS: WS -> channel(HIDDEN) ;
-StrExpr_NL: NL -> channel(HIDDEN) ;
+StrExpr_WS: WS -> skip ;
+StrExpr_NL: NL -> skip ;
